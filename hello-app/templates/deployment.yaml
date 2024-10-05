@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hello-app.fullname" . }}  # Use the chart name
+spec:
+  replicas: {{ .Values.replicaCount }}  # Parameterized replica count
+  selector:
+    matchLabels:
+      app: {{ include "hello-app.name" . }}  # Use chart name
+  template:
+    metadata:
+      labels:
+        app: {{ include "hello-app.name" . }}  # Use chart name
+    spec:
+      containers:
+        - name: {{ include "hello-app.name" . }}  # Use chart name
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"  # Parameterize image repository and tag
+          ports:
+            - containerPort: {{ .Values.service.port }}  # Parameterize container port
